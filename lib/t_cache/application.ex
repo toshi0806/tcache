@@ -7,13 +7,12 @@ defmodule TCache.Application do
 
   @impl true
   def start(_type, _args) do
+    port = String.to_integer(System.get_env("TCACHE_PORT") || "53")
+
     children = [
-      # Starts a worker by calling: TCache.Worker.start_link(arg)
-      # {TCache.Worker, arg}
+      {TCache.UDPServerTask, port}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: TCache.Supervisor]
     Supervisor.start_link(children, opts)
   end
