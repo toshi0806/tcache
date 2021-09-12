@@ -5,11 +5,13 @@ defmodule TCache.UDPServer do
 
   def open(port, family) do
     {:ok, socket} = :gen_udp.open(port, [:binary, family, active: false, reuseaddr: true])
+    Logger.info "port opened at #{inspect socket}/#{port}"
 
     looper(socket)
   end
 
   def looper(socket) do
+    Logger.info "enter looper"
     {:ok, data} = :gen_udp.recv(socket, 0)
     _pid = spawn(TCache.UDPServer, :echo_server, [socket, data])
 
