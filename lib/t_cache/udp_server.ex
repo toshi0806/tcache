@@ -13,7 +13,7 @@ defmodule TCache.UDPServer do
   def looper(socket) do
     Logger.info "enter looper"
     {:ok, data} = :gen_udp.recv(socket, 0)
-    _pid = spawn(TCache.UDPServer, :echo_server, [socket, data])
+    _pid = spawn(TCache, :process, [socket, data])
 
     looper(socket)
   end
